@@ -14,6 +14,6 @@ public class GastoVariable extends Gasto {
 
     @Override
     public String getTipoGasto() {
-        return "Lonche, materiales universidad";
+        return "Variable";
     }
 }

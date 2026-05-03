@@ -13,6 +13,6 @@ public class GastoOcio extends Gasto {
 
     @Override
     public String getTipoGasto() {
-        return "Caprichos, regalos, cosas innecesarias";
+        return "Ocio";
     }
 }

@@ -1,0 +1,146 @@
+/* Colores base */
+.root {
+    -fx-background-color: #1e1e2e;
+    -fx-text-fill: #cdd6f4;
+    -fx-font-family: "Segoe UI", sans-serif;
+}
+
+/* Barra superior */
+.top-bar {
+    -fx-background-color: #181825;
+    -fx-padding: 16px;
+    -fx-spacing: 12px;
+}
+
+/* Botón primario */
+.btn-primary {
+    -fx-background-color: #89b4fa;
+    -fx-text-fill: #1e1e2e;
+    -fx-font-weight: bold;
+    -fx-background-radius: 8px;
+    -fx-padding: 8px 20px;
+    -fx-cursor: hand;
+}
+
+.btn-primary:hover {
+    -fx-background-color: #b4d0fb;
+}
+
+/* Botón peligro (eliminar) */
+.btn-danger {
+    -fx-background-color: #f38ba8;
+    -fx-text-fill: #1e1e2e;
+    -fx-font-weight: bold;
+    -fx-background-radius: 8px;
+    -fx-padding: 8px 20px;
+    -fx-cursor: hand;
+}
+
+.btn-danger:hover {
+    -fx-background-color: #f5a3b8;
+}
+
+/* Tabla */
+.table-view {
+    -fx-background-color: #181825;
+    -fx-border-color: #313244;
+    -fx-border-radius: 8px;
+}
+
+.table-view .column-header {
+    -fx-background-color: #313244;
+}
+
+.table-view .column-header .label {
+    -fx-text-fill: #89b4fa;
+    -fx-font-weight: bold;
+}
+
+.table-cell {
+    -fx-text-fill: #cdd6f4;
+    -fx-padding: 6px 8px;
+}
+
+.table-row-cell {
+    -fx-background-color: #1e1e2e;
+    -fx-text-fill: #cdd6f4;
+    -fx-border-color: transparent;
+}
+
+.table-row-cell:odd {
+    -fx-background-color: #24273a;
+}
+
+.table-row-cell:selected {
+    -fx-background-color: #45475a;
+}
+
+.table-row-cell:selected .label {
+    -fx-text-fill: #ffffff;
+}
+
+/* Tarjetas de resumen */
+.card {
+    -fx-background-color: #181825;
+    -fx-background-radius: 12px;
+    -fx-padding: 16px;
+    -fx-spacing: 6px;
+}
+
+.card-title {
+    -fx-text-fill: #a6adc8;
+    -fx-font-size: 12px;
+}
+
+.card-value {
+    -fx-text-fill: #cdd6f4;
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+}
+
+/* Labels de tipo de gasto */
+.badge-fijo {
+    -fx-background-color: #89b4fa;
+    -fx-text-fill: #1e1e2e;
+    -fx-background-radius: 20px;
+    -fx-padding: 2px 10px;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+}
+
+.badge-variable {
+    -fx-background-color: #a6e3a1;
+    -fx-text-fill: #1e1e2e;
+    -fx-background-radius: 20px;
+    -fx-padding: 2px 10px;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+}
+
+.badge-ocio {
+    -fx-background-color: #fab387;
+    -fx-text-fill: #1e1e2e;
+    -fx-background-radius: 20px;
+    -fx-padding: 2px 10px;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+}
+
+/* Formulario */
+.form-field {
+    -fx-background-color: #313244;
+    -fx-text-fill: #cdd6f4;
+    -fx-border-color: #45475a;
+    -fx-border-radius: 6px;
+    -fx-background-radius: 6px;
+    -fx-padding: 8px;
+}
+
+.form-field:focused {
+    -fx-border-color: #89b4fa;
+}
+
+.form-label {
+    -fx-text-fill: #a6adc8;
+    -fx-font-size: 12px;
+}

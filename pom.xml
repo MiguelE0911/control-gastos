@@ -11,8 +11,8 @@
     <packaging>jar</packaging>
 
     <properties>
-        <maven.compiler.source>17</maven.compiler.source>
-        <maven.compiler.target>17</maven.compiler.target>
+        <maven.compiler.source>21</maven.compiler.source>
+        <maven.compiler.target>21</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <javafx.version>21</javafx.version>
     </properties>
@@ -52,8 +52,7 @@
                 <artifactId>javafx-maven-plugin</artifactId>
                 <version>0.0.8</version>
                 <configuration>
-                    <!-- Aquí irá tu clase Main cuando la crees -->
-                    <mainClass>com.miguel.MainApp</mainClass>
+                    <mainClass>com.miguel.gastos.MainApp</mainClass>
                 </configuration>
             </plugin>
         </plugins>

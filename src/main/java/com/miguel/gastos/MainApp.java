@@ -1,14 +1,36 @@
 package com.miguel.gastos;
-import com.miguel.gastos.dao.GastoDAO;
-import com.miguel.gastos.dao.GastoDAOImpl;
-import com.miguel.gastos.model.Gasto;
-import java.util.List;
 
-public class MainApp {
-        public static void main(String[] args) {
-            GastoDAO dao = new GastoDAOImpl();
+import com.miguel.gastos.util.DatabaseConnection;
+import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
 
-            List<Gasto> gastos = dao.listarTodos();
-            gastos.forEach(System.out::println);
-        }
+public class MainApp extends Application {
+
+    @Override
+    public void start(Stage stage) throws Exception {
+        Parent root = FXMLLoader.load(
+                getClass().getResource("/fxml/MainView.fxml"));
+
+        Scene scene = new Scene(root);
+        stage.setTitle("Control de Gastos Personales");
+        stage.setScene(scene);
+        stage.setMinWidth(800);
+        stage.setMinHeight(500);
+        stage.show();
     }
+
+    @Override
+    public void stop() {
+        DatabaseConnection.closeConnection();
+        Platform.exit();
+        System.exit(0);
+    }
+
+    public static void main(String[] args) {
+        launch(args);
+    }
+}

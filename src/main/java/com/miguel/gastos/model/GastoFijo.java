@@ -14,6 +14,6 @@ public class GastoFijo extends Gasto{
 
     @Override
     public String getTipoGasto() {
-        return "Pasaje, Spotify";
+        return "Fijo";
     }
 }

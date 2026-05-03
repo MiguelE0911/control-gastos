@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<BorderPane
+        xmlns="http://javafx.com/javafx"
+        xmlns:fx="http://javafx.com/fxml"
+        fx:controller="com.miguel.gastos.controller.MainController"
+        stylesheets="@../css/dark-theme.css"
+        prefWidth="900" prefHeight="600">
+
+    <!-- BARRA SUPERIOR -->
+    <top>
+        <HBox styleClass="top-bar" alignment="CENTER_LEFT" spacing="12">
+            <Label text="💰 Control de Gastos"
+                   style="-fx-text-fill: #cdd6f4; -fx-font-size: 18px; -fx-font-weight: bold;"/>
+            <Region HBox.hgrow="ALWAYS"/>
+            <Button text="+ Nuevo Gasto"
+                    styleClass="btn-primary"
+                    onAction="#abrirFormularioNuevo"/>
+            <Button text="🗑 Eliminar"
+                    styleClass="btn-danger"
+                    onAction="#eliminarGasto"/>
+        </HBox>
+    </top>
+
+    <!-- CENTRO: tarjetas + tabla -->
+    <center>
+        <VBox spacing="16" style="-fx-padding: 20px;">
+
+            <!-- Tarjetas de resumen -->
+            <HBox spacing="16">
+                <VBox styleClass="card" HBox.hgrow="ALWAYS">
+                    <Label text="TOTAL GASTOS" styleClass="card-title"/>
+                    <Label fx:id="lblTotal" text="Q0.00" styleClass="card-value"/>
+                </VBox>
+                <VBox styleClass="card" HBox.hgrow="ALWAYS">
+                    <Label text="GASTOS FIJOS" styleClass="card-title"/>
+                    <Label fx:id="lblFijos" text="Q0.00" styleClass="card-value"
+                           style="-fx-text-fill: #89b4fa;"/>
+                </VBox>
+                <VBox styleClass="card" HBox.hgrow="ALWAYS">
+                    <Label text="GASTOS VARIABLES" styleClass="card-title"/>
+                    <Label fx:id="lblVariables" text="Q0.00" styleClass="card-value"
+                           style="-fx-text-fill: #a6e3a1;"/>
+                </VBox>
+                <VBox styleClass="card" HBox.hgrow="ALWAYS">
+                    <Label text="OCIO" styleClass="card-title"/>
+                    <Label fx:id="lblOcio" text="Q0.00" styleClass="card-value"
+                           style="-fx-text-fill: #fab387;"/>
+                </VBox>
+            </HBox>
+
+            <!-- Tabla de gastos -->
+            <TableView fx:id="tablaGastos" VBox.vgrow="ALWAYS"
+                       styleClass="table-view">
+                <placeholder>
+                    <Label text="No hay gastos registrados"
+                           style="-fx-text-fill: #a6adc8;"/>
+                </placeholder>
+                <columns>
+                    <TableColumn fx:id="colTipo"        text="Tipo"        prefWidth="100"/>
+                    <TableColumn fx:id="colDescripcion" text="Descripción" prefWidth="250"/>
+                    <TableColumn fx:id="colMonto"       text="Monto"       prefWidth="120"/>
+                    <TableColumn fx:id="colFecha"       text="Fecha"       prefWidth="120"/>
+                    <TableColumn fx:id="colDetalle"     text="Detalle"     prefWidth="180"/>
+                </columns>
+            </TableView>
+
+        </VBox>
+    </center>
+
+</BorderPane>
