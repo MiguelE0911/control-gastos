@@ -7,6 +7,7 @@ import java.util.List;
 public class MainApp {
         public static void main(String[] args) {
             GastoDAO dao = new GastoDAOImpl();
+
             List<Gasto> gastos = dao.listarTodos();
             gastos.forEach(System.out::println);
         }
