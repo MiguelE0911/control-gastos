@@ -13,6 +13,6 @@ public class GastoOcio extends Gasto {
 
     @Override
     public String getTipoGasto() {
-        return "Ocio";
+        return "OCIO";
     }
 }
