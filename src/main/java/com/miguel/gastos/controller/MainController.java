@@ -3,6 +3,7 @@ package com.miguel.gastos.controller;
 import com.miguel.gastos.dao.GastoDAO;
 import com.miguel.gastos.dao.GastoDAOImpl;
 import com.miguel.gastos.model.*;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -14,7 +15,6 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
@@ -41,11 +41,19 @@ public class MainController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         configurarColumnas();
         cargarGastos();
+        tablaGastos.setOnMouseClicked(event -> {
+            if (event.getClickCount() == 2) {
+                Gasto seleccionado = tablaGastos.getSelectionModel().getSelectedItem();
+                if (seleccionado != null) {
+                    abrirFormularioEditar(seleccionado);
+                }
+            }
+        });
     }
 
     private void configurarColumnas() {
         colTipo.setCellValueFactory(data ->
-                new javafx.beans.property.SimpleStringProperty(
+                new SimpleStringProperty(
                         data.getValue().getTipoGasto()));
 
         colTipo.setCellFactory(col -> new TableCell<>() {
@@ -85,7 +93,7 @@ public class MainController implements Initializable {
         });
 
         colFecha.setCellValueFactory(data ->
-                new javafx.beans.property.SimpleStringProperty(
+                new SimpleStringProperty(
                         data.getValue().getFecha().toString()));
 
         // Columna detalle: muestra el atributo extra según el tipo
@@ -97,7 +105,7 @@ public class MainController implements Initializable {
                 case GastoOcio go       -> go.getEsRecurrente() ? "Recurrente" : "Única vez";
                 default                 -> "";
             };
-            return new javafx.beans.property.SimpleStringProperty(detalle);
+            return new SimpleStringProperty(detalle);
         });
     }
 
@@ -137,6 +145,29 @@ public class MainController implements Initializable {
             stage.showAndWait();
 
             // Al cerrar el formulario, recargamos la tabla
+            cargarGastos();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void abrirFormularioEditar(Gasto gasto) {
+        try {
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource("/fxml/FormularioGasto.fxml"));
+            Parent root = loader.load();
+
+            // Pasar el gasto al controlador del formulario
+            FormularioController controller = loader.getController();
+            controller.cargarGasto(gasto);
+
+            Stage stage = new Stage();
+            stage.setTitle("Editar Gasto");
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setScene(new Scene(root));
+            stage.showAndWait();
+
             cargarGastos();
 
         } catch (IOException e) {

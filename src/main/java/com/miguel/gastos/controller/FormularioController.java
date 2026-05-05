@@ -30,8 +30,11 @@ public class FormularioController implements Initializable {
     @FXML private TextField txtDiaPago;
     @FXML private ComboBox<String> cmbSubcategoria;
     @FXML private CheckBox chkRecurrente;
+    @FXML private Label lblTitulo;
 
     private final GastoDAO dao = new GastoDAOImpl();
+
+    private Gasto gastoEditando = null;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -70,7 +73,6 @@ public class FormularioController implements Initializable {
 
     @FXML
     private void guardar() {
-        // Validaciones
         if (!validarCampos()) return;
 
         String tipo        = cmbTipo.getValue();
@@ -78,27 +80,31 @@ public class FormularioController implements Initializable {
         double monto       = Double.parseDouble(txtMonto.getText().trim());
         LocalDate fecha    = dateFecha.getValue();
 
-        // Crear el objeto correcto según el tipo
-        Gasto gasto = switch (tipo) {
-            case "FIJO" -> {
-                int diaPago = Integer.parseInt(txtDiaPago.getText().trim());
-                yield new GastoFijo(descripcion, monto, fecha, diaPago);
-            }
-            case "VARIABLE" -> {
-                String sub = cmbSubcategoria.getValue();
-                yield new GastoVariable(descripcion, monto, fecha, sub);
-            }
-            case "OCIO" -> {
-                boolean recurrente = chkRecurrente.isSelected();
-                yield new GastoOcio(descripcion, monto, fecha, recurrente);
-            }
-            default -> null;
-        };
+        if (gastoEditando == null) {
+            // MODO CREAR
+            Gasto gasto = construirGasto(tipo, descripcion, monto, fecha);
+            if (gasto != null) dao.insertar(gasto);
 
-        if (gasto != null) {
-            dao.insertar(gasto);
-            cerrarVentana();
+        } else {
+            // MODO EDITAR: actualizar los campos del objeto existente
+            gastoEditando.setDescripcion(descripcion);
+            gastoEditando.setMonto(monto);
+            gastoEditando.setFecha(fecha);
+
+            if (gastoEditando instanceof GastoFijo gf) {
+                gf.setDiaPago(Integer.parseInt(txtDiaPago.getText().trim()));
+
+            } else if (gastoEditando instanceof GastoVariable gv) {
+                gv.setSubcategoria(cmbSubcategoria.getValue());
+
+            } else if (gastoEditando instanceof GastoOcio go) {
+                go.setEsRecurrente(chkRecurrente.isSelected());
+            }
+
+            dao.actualizar(gastoEditando);
         }
+
+        cerrarVentana();
     }
 
     @FXML
@@ -147,6 +153,44 @@ public class FormularioController implements Initializable {
         }
 
         return true;
+    }
+
+    public void cargarGasto(Gasto gasto) {
+        this.gastoEditando = gasto;
+        lblTitulo.setText("Editar Gasto");
+        txtDescripcion.getScene(); // ya está inicializado cuando se llama esto
+
+        // Precargar campos comunes
+        cmbTipo.setValue(gasto.getTipoGasto());
+        txtDescripcion.setText(gasto.getDescripcion());
+        txtMonto.setText(String.valueOf(gasto.getMonto()));
+        dateFecha.setValue(gasto.getFecha());
+
+        // Disparar el evento para mostrar el panel correcto
+        onTipoSeleccionado();
+        // Precargar campo específico según tipo
+        if (gasto instanceof GastoFijo gf) {
+            txtDiaPago.setText(String.valueOf(gf.getDiaPago()));
+
+        } else if (gasto instanceof GastoVariable gv) {
+            cmbSubcategoria.setValue(gv.getSubcategoria());
+
+        } else if (gasto instanceof GastoOcio go) {
+            chkRecurrente.setSelected(go.getEsRecurrente());
+        }
+    }
+
+    private Gasto construirGasto(String tipo, String descripcion,
+                                 double monto, LocalDate fecha) {
+        return switch (tipo) {
+            case "FIJO" -> new GastoFijo(descripcion, monto, fecha,
+                    Integer.parseInt(txtDiaPago.getText().trim()));
+            case "VARIABLE" -> new GastoVariable(descripcion, monto, fecha,
+                    cmbSubcategoria.getValue());
+            case "OCIO" -> new GastoOcio(descripcion, monto, fecha,
+                    chkRecurrente.isSelected());
+            default -> null;
+        };
     }
 
     private void mostrarError(String mensaje) {
