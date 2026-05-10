@@ -201,4 +201,22 @@ public class MainController implements Initializable {
         alert.setHeaderText(null);
         alert.showAndWait();
     }
+
+    @FXML
+    private void abrirReportes() {
+        try {
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource("/fxml/ReportesView.fxml"));
+            Parent root = loader.load();
+
+            Stage stage = new Stage();
+            stage.setTitle("Reportes");
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setScene(new Scene(root));
+            stage.show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

@@ -15,7 +15,6 @@ import java.time.LocalDate;
 import java.util.ResourceBundle;
 
 public class FormularioController implements Initializable {
-
     @FXML private ComboBox<String> cmbTipo;
     @FXML private TextField txtDescripcion;
     @FXML private TextField txtMonto;
@@ -33,7 +32,6 @@ public class FormularioController implements Initializable {
     @FXML private Label lblTitulo;
 
     private final GastoDAO dao = new GastoDAOImpl();
-
     private Gasto gastoEditando = null;
 
     @Override
@@ -42,13 +40,11 @@ public class FormularioController implements Initializable {
         cmbTipo.setItems(FXCollections.observableArrayList(
                 "FIJO", "VARIABLE", "OCIO"
         ));
-
         // Cargar subcategorías para GastoVariable
         cmbSubcategoria.setItems(FXCollections.observableArrayList(
                 "Alimentación", "Transporte", "Salud",
                 "Educación", "Ropa", "Tecnología", "Otro"
         ));
-
         // Fecha por defecto: hoy
         dateFecha.setValue(LocalDate.now());
     }
@@ -57,12 +53,10 @@ public class FormularioController implements Initializable {
     private void onTipoSeleccionado() {
         String tipo = cmbTipo.getValue();
         if (tipo == null) return;
-
         // Ocultar todos los paneles primero
         panelFijo.setVisible(false);     panelFijo.setManaged(false);
         panelVariable.setVisible(false); panelVariable.setManaged(false);
         panelOcio.setVisible(false);     panelOcio.setManaged(false);
-
         // Mostrar solo el panel correspondiente
         switch (tipo) {
             case "FIJO"     -> { panelFijo.setVisible(true);     panelFijo.setManaged(true); }
@@ -74,7 +68,6 @@ public class FormularioController implements Initializable {
     @FXML
     private void guardar() {
         if (!validarCampos()) return;
-
         String tipo        = cmbTipo.getValue();
         String descripcion = txtDescripcion.getText().trim();
         double monto       = Double.parseDouble(txtMonto.getText().trim());
@@ -90,20 +83,15 @@ public class FormularioController implements Initializable {
             gastoEditando.setDescripcion(descripcion);
             gastoEditando.setMonto(monto);
             gastoEditando.setFecha(fecha);
-
             if (gastoEditando instanceof GastoFijo gf) {
                 gf.setDiaPago(Integer.parseInt(txtDiaPago.getText().trim()));
-
             } else if (gastoEditando instanceof GastoVariable gv) {
                 gv.setSubcategoria(cmbSubcategoria.getValue());
-
             } else if (gastoEditando instanceof GastoOcio go) {
                 go.setEsRecurrente(chkRecurrente.isSelected());
             }
-
             dao.actualizar(gastoEditando);
         }
-
         cerrarVentana();
     }
 
@@ -151,7 +139,6 @@ public class FormularioController implements Initializable {
             mostrarError("Selecciona una subcategoría.");
             return false;
         }
-
         return true;
     }
 

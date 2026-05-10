@@ -23,6 +23,11 @@
             <Button text="🗑 Eliminar"
                     styleClass="btn-danger"
                     onAction="#eliminarGasto"/>
+            <Button text="📄 Reportes"
+                    style="-fx-background-color: #a6e3a1; -fx-text-fill: #1e1e2e;
+               -fx-font-weight: bold; -fx-background-radius: 8px;
+               -fx-padding: 8px 20px; -fx-cursor: hand;"
+                    onAction="#abrirReportes"/>
         </HBox>
     </top>
 
