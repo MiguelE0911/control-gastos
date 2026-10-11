@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.miguel.gastos.controller.ReportesController"
+      stylesheets="@../css/dark-theme.css"
+      spacing="24" style="-fx-padding: 24px; -fx-background-color: #1e1e2e;"
+      prefWidth="500">
+
+    <!-- Título -->
+    <Label text="📄 Reportes"
+           style="-fx-text-fill: #cdd6f4; -fx-font-size: 18px; -fx-font-weight: bold;"/>
+
+    <!-- Reporte 1: Resumen General -->
+    <VBox styleClass="card" spacing="12">
+        <Label text="Resumen General de Gastos"
+               style="-fx-text-fill: #89b4fa; -fx-font-size: 14px; -fx-font-weight: bold;"/>
+        <Label text="Genera un PDF con el total de todos los gastos agrupados por tipo."
+               styleClass="card-title" wrapText="true"/>
+        <Button text="📊 Generar Resumen General"
+                styleClass="btn-primary"
+                onAction="#generarResumenGeneral"
+                maxWidth="Infinity"/>
+    </VBox>
+
+    <!-- Reporte 2: Por Período -->
+    <VBox styleClass="card" spacing="12">
+        <Label text="Gastos por Período"
+               style="-fx-text-fill: #a6e3a1; -fx-font-size: 14px; -fx-font-weight: bold;"/>
+        <Label text="Genera un PDF con los gastos dentro de un rango de fechas."
+               styleClass="card-title" wrapText="true"/>
+
+        <HBox spacing="16" alignment="CENTER_LEFT">
+            <VBox spacing="4">
+                <Label text="Desde" styleClass="form-label"/>
+                <DatePicker fx:id="dateDesde" prefWidth="180"
+                            styleClass="form-field"/>
+            </VBox>
+            <VBox spacing="4">
+                <Label text="Hasta" styleClass="form-label"/>
+                <DatePicker fx:id="dateHasta" prefWidth="180"
+                            styleClass="form-field"/>
+            </VBox>
+        </HBox>
+
+        <Button text="📅 Generar Reporte por Período"
+                styleClass="btn-primary"
+                onAction="#generarReportePeriodo"
+                maxWidth="Infinity"
+                style="-fx-background-color: #a6e3a1;"/>
+    </VBox>
+
+    <!-- Estado -->
+    <Label fx:id="lblEstado" text=""
+           style="-fx-text-fill: #a6e3a1; -fx-font-size: 12px;"
+           wrapText="true"/>
+
+</VBox>

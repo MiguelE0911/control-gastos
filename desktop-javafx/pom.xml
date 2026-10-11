@@ -1,0 +1,11 @@
+<?xml version=\ 1.0\ encoding=\UTF-8\?>
+<project xmlns=\http://maven.apache.org/POM/4.0.0\ xmlns:xsi=\http://www.w3.org/2001/XMLSchema-instance\ xsi:schemaLocation=\http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd\>
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.miguel.gastos</groupId>
+        <artifactId>control-gastos</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+    <artifactId>desktop-javafx</artifactId>
+    <packaging>jar</packaging>
+    <properties>\n        <maven.compiler.source>21</maven.compiler.source>\n        <maven.compiler.target>21</maven.compiler.target>\n    </properties>\n    <dependencies>\n        <dependency>\n            <groupId>com.miguel.gastos</groupId>\n            <artifactId>core-jvm</artifactId>\n            <version>1.0-SNAPSHOT</version>\n        </dependency>\n        <dependency>\n            <groupId>org.openjfx</groupId>\n            <artifactId>javafx-controls</artifactId>\n        </dependency>\n        <dependency>\n            <groupId>org.openjfx</groupId>\n            <artifactId>javafx-fxml</artifactId>\n        </dependency>\n        <dependency>\n            <groupId>org.postgresql</groupId>\n            <artifactId>postgresql</artifactId>\n        </dependency>\n        <dependency>\n            <groupId>org.xerial</groupId>\n            <artifactId>sqlite-jdbc</artifactId>\n        </dependency>\n        <dependency>\n            <groupId>net.sf.jasperreports</groupId>\n            <artifactId>jasperreports</artifactId>\n        </dependency>\n        <dependency>\n            <groupId>com.github.librepdf</groupId>\n            <artifactId>openpdf</artifactId>\n        </dependency>\n    </dependencies>\n    <build>\n        <plugins>\n            <plugin>\n                <groupId>org.openjfx</groupId>\n                <artifactId>javafx-maven-plugin</artifactId>\n                <version>0.0.8</version>\n                <configuration>\n                    <mainClass>com.miguel.gastos.MainApp</mainClass>\n                </configuration>\n            </plugin>\n        </plugins>\n    </build>\n</project>\n

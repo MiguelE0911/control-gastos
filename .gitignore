@@ -43,3 +43,6 @@ Thumbs.db
 
 ### DataBase ###
 src/main/resources/database.properties
+
+### Documentación ###
+PROJECT_PLAN_KMP.md
