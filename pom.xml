@@ -38,7 +38,7 @@
         <!-- PostgreSQL Driver -->
         <dependency>
             <groupId>org.postgresql</groupId>
-            <artifactId>postgresql</artifactId>
+            <!-- removed postgresql -->
             <version>42.7.3</version>
         </dependency>
 
