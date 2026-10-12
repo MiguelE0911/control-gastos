@@ -2,7 +2,9 @@ package com.miguel.gastos.dao;
 import com.miguel.gastos.model.*;
 import com.miguel.gastos.util.DatabaseConnection;
 import java.sql.*;
+import java.time.Instant;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -126,12 +128,34 @@ public class GastoDAOImpl implements GastoDAO {
         }
     }
 
+    // Acepta tanto fechas ISO ("2026-10-11") como epoch millis ("1791694800000"),
+    // para poder leer bases de datos creadas por versiones anteriores.
+    private LocalDate parseFecha(ResultSet rs) throws SQLException {
+        Object valor = rs.getObject("fecha");
+        if (valor == null) return null;
+
+        if (valor instanceof Number n) {
+            return Instant.ofEpochMilli(n.longValue())
+                    .atZone(ZoneId.systemDefault()).toLocalDate();
+        }
+        if (valor instanceof java.sql.Date d) return d.toLocalDate();
+        if (valor instanceof java.sql.Timestamp t) return t.toLocalDateTime().toLocalDate();
+
+        String texto = valor.toString().trim();
+        if (texto.matches("-?\\d+")) {
+            return Instant.ofEpochMilli(Long.parseLong(texto))
+                    .atZone(ZoneId.systemDefault()).toLocalDate();
+        }
+        // Formato ISO "YYYY-MM-DD" (o recortar la parte de hora si la hubiera)
+        return LocalDate.parse(texto.length() > 10 ? valor.toString().substring(0, 10) : valor.toString());
+    }
+
     // MAPPER: Convierte una fila del ResultSet en el objeto Java correcto
     private Gasto mapearGasto(ResultSet rs) throws SQLException {
         String tipo        = rs.getString("tipo");
         String descripcion = rs.getString("descripcion");
         double monto       = rs.getDouble("monto");
-        LocalDate fecha    = rs.getDate("fecha").toLocalDate();
+        LocalDate fecha    = parseFecha(rs);
 
         Gasto gasto = switch (tipo) {
             case "FIJO" -> {
