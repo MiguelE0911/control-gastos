@@ -9,6 +9,12 @@ target/
 .gradle/
 !gradle/wrapper/gradle-wrapper.jar
 
+# Android / KMP
+local.properties
+*.apk
+*.aab
+captures/
+
 ### IntelliJ IDEA ###
 .idea/modules.xml
 .idea/jarRepositories.xml

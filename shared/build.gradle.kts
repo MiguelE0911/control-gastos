@@ -1,14 +1,28 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 plugins {
     alias(libs.plugins.kotlin.multiplatform)
     alias(libs.plugins.sqldelight)
+    alias(libs.plugins.android.kmp.library)
 }
 
 kotlin {
     jvmToolchain(21)
 
-    // Paso 1 de la Fase 2: solo target JVM (Desktop).
-    // android() e ios() se añadirán en el Paso 2.
+    // Target JVM: Desktop (JavaFX).
     jvm()
+
+    // Target Android: biblioteca KMP (sin app todavía).
+    // iOS queda suspendido hasta contar con macOS.
+    android {
+        namespace = "com.miguel.gastos.shared"
+        compileSdk = libs.versions.androidCompileSdk.get().toInt()
+        minSdk = libs.versions.androidMinSdk.get().toInt()
+
+        compilerOptions {
+            jvmTarget.set(JvmTarget.JVM_11)
+        }
+    }
 
     sourceSets {
         commonMain.dependencies {
@@ -18,6 +32,9 @@ kotlin {
         }
         jvmMain.dependencies {
             implementation(libs.sqldelight.sqlite.driver)
+        }
+        androidMain.dependencies {
+            implementation(libs.sqldelight.android.driver)
         }
     }
 }
