@@ -1,6 +1,6 @@
 package com.miguel.gastos;
 
-import com.miguel.gastos.util.DatabaseConnection;
+import com.miguel.gastos.data.GastoRepositoryFactory;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -25,9 +25,12 @@ public class MainApp extends Application {
 
     @Override
     public void stop() {
-        DatabaseConnection.closeConnection();
-        Platform.exit();
-        System.exit(0);
+        try {
+            GastoRepositoryFactory.close();
+        } finally {
+            Platform.exit();
+            System.exit(0);
+        }
     }
 
     public static void main(String[] args) {

@@ -1,8 +1,9 @@
 package com.miguel.gastos.controller;
 
-import com.miguel.gastos.dao.GastoDAO;
-import com.miguel.gastos.dao.GastoDAOImpl;
+import com.miguel.gastos.data.GastoRepository;
+import com.miguel.gastos.data.GastoRepositoryFactory;
 import com.miguel.gastos.model.*;
+import com.miguel.gastos.util.ConversorFechas;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -31,7 +32,7 @@ public class FormularioController implements Initializable {
     @FXML private CheckBox chkRecurrente;
     @FXML private Label lblTitulo;
 
-    private final GastoDAO dao = new GastoDAOImpl();
+    private final GastoRepository repository = GastoRepositoryFactory.get();
     private Gasto gastoEditando = null;
 
     @Override
@@ -76,13 +77,13 @@ public class FormularioController implements Initializable {
         if (gastoEditando == null) {
             // MODO CREAR
             Gasto gasto = construirGasto(tipo, descripcion, monto, fecha);
-            if (gasto != null) dao.insertar(gasto);
+            if (gasto != null) repository.insertar(gasto);
 
         } else {
             // MODO EDITAR: actualizar los campos del objeto existente
             gastoEditando.setDescripcion(descripcion);
             gastoEditando.setMonto(monto);
-            gastoEditando.setFecha(fecha);
+            gastoEditando.setFecha(ConversorFechas.aKotlin(fecha));
             if (gastoEditando instanceof GastoFijo gf) {
                 gf.setDiaPago(Integer.parseInt(txtDiaPago.getText().trim()));
             } else if (gastoEditando instanceof GastoVariable gv) {
@@ -90,7 +91,7 @@ public class FormularioController implements Initializable {
             } else if (gastoEditando instanceof GastoOcio go) {
                 go.setEsRecurrente(chkRecurrente.isSelected());
             }
-            dao.actualizar(gastoEditando);
+            repository.actualizar(gastoEditando);
         }
         cerrarVentana();
     }
@@ -151,7 +152,7 @@ public class FormularioController implements Initializable {
         cmbTipo.setValue(gasto.getTipoGasto());
         txtDescripcion.setText(gasto.getDescripcion());
         txtMonto.setText(String.valueOf(gasto.getMonto()));
-        dateFecha.setValue(gasto.getFecha());
+        dateFecha.setValue(ConversorFechas.aJava(gasto.getFecha()));
 
         // Disparar el evento para mostrar el panel correcto
         onTipoSeleccionado();
@@ -170,11 +171,11 @@ public class FormularioController implements Initializable {
     private Gasto construirGasto(String tipo, String descripcion,
                                  double monto, LocalDate fecha) {
         return switch (tipo) {
-            case "FIJO" -> new GastoFijo(descripcion, monto, fecha,
+            case "FIJO" -> new GastoFijo(descripcion, monto, ConversorFechas.aKotlin(fecha),
                     Integer.parseInt(txtDiaPago.getText().trim()));
-            case "VARIABLE" -> new GastoVariable(descripcion, monto, fecha,
+            case "VARIABLE" -> new GastoVariable(descripcion, monto, ConversorFechas.aKotlin(fecha),
                     cmbSubcategoria.getValue());
-            case "OCIO" -> new GastoOcio(descripcion, monto, fecha,
+            case "OCIO" -> new GastoOcio(descripcion, monto, ConversorFechas.aKotlin(fecha),
                     chkRecurrente.isSelected());
             default -> null;
         };

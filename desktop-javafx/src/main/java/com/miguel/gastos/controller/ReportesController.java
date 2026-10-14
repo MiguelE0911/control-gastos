@@ -1,6 +1,6 @@
 package com.miguel.gastos.controller;
 
-import com.miguel.gastos.service.ReporteService;
+import com.miguel.gastos.service.ReportePdfService;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.DatePicker;
@@ -19,7 +19,7 @@ public class ReportesController implements Initializable {
     @FXML private DatePicker dateHasta;
     @FXML private Label lblEstado;
 
-    private final ReporteService reporteService = new ReporteService();
+    private final ReportePdfService reporteService = new ReportePdfService();
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {

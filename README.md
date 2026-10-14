@@ -1,37 +1,39 @@
 # Control de Gastos Personales
 
-Aplicación de escritorio para el control de gastos personales, desarrollada en Java como proyecto de aprendizaje progresivo.
+Aplicación de escritorio para el control de gastos personales.
 
 ## Tecnologías
 
-- **Java 21**
+- **Java 21** + **Kotlin Multiplatform (JVM target)**
 - **JavaFX 21** — Interfaz gráfica
-- **SQLite** — Base de datos local (archivo `~/.control-gastos/control_gastos.db`)
-- **Maven** — Gestión de dependencias
+- **SQLDelight** — Persistencia SQLite (archivo `~/.control-gastos/control_gastos.db`)
+- **Gradle Kotlin DSL** — Build
 - **JasperReports / OpenPDF** — Generación de reportes PDF
 
 ## Estructura del proyecto
 
-Proyecto Maven multimódulo:
-
 ```
 control-gastos/
-├── pom.xml             # POM padre: versiones y configuración común
-├── core-jvm/           # Núcleo de negocio (sin JavaFX): modelo, DAO, servicio
-│   └── src/main/java/com/miguel/gastos/
-│       ├── model/      # Clases de dominio (POO + Herencia)
-│       ├── dao/        # Acceso a datos (Patrón DAO)
-│       ├── service/    # Lógica de reportes
-│       └── util/       # Conexión a la base de datos
-└── desktop-javafx/     # Aplicación de escritorio
+├── settings.gradle.kts
+├── build.gradle.kts
+├── gradle/libs.versions.toml
+├── shared/             # Módulo KMP (commonMain + jvmMain)
+│   ├── src/commonMain/kotlin/com/miguel/gastos/
+│   │   ├── model/
+│   │   ├── service/   # ReporteCalculator (lógica pura)
+│   │   └── data/      # GastoRepository
+│   └── src/jvmMain/kotlin/com/miguel/gastos/
+│       └── data/util  # Driver/Factory/ConversorFechas
+└── desktop-javafx/     # UI JavaFX
     └── src/main/
         ├── java/com/miguel/gastos/
-        │   ├── MainApp.java        # Punto de entrada
-        │   └── controller/         # Controladores JavaFX
+        │   ├── MainApp.java
+        │   ├── controller/
+        │   └── service/ReportePdfService.java
         └── resources/
-            ├── fxml/               # Vistas
-            ├── css/                # Tema oscuro
-            └── reports/            # Plantillas JasperReports
+            ├── fxml/
+            ├── css/
+            └── reports/
 ```
 
 ## Cómo ejecutar
@@ -39,19 +41,12 @@ control-gastos/
 Desde la raíz del proyecto:
 
 ```bash
-mvn clean install
-mvn -pl desktop-javafx javafx:run
+./gradlew :desktop-javafx:run
 ```
 
-O entrando directamente al módulo de escritorio:
+## Notas de la migración Fase 2 (Paso 1)
 
-```
-cd desktop-javafx
-mvn javafx:run
-```
-
-> Nota: no ejecutes `javafx:run` desde la raíz; el proyecto raíz es de tipo `pom` y no contiene la clase principal.
-
-## Licencia
-
-Proyecto personal de uso educativo. Sin licencia definida.
+- El dominio se migró a Kotlin `sealed class` (mutable por ahora) para mantener interoperabilidad con Java.
+- Persistencia: SQLDelight genera el acceso a SQLite. El archivo BD existente en `~/.control-gastos/` se conserva.
+- JasperReports se mantiene solo en `desktop-javafx`. La lógica de cálculo pasa a `:shared` (`ReporteCalculator`).
+- API del repositorio es síncrona; se pasará a `suspend` cuando se añadan Android/iOS.

@@ -1,7 +1,7 @@
 package com.miguel.gastos.controller;
 
-import com.miguel.gastos.dao.GastoDAO;
-import com.miguel.gastos.dao.GastoDAOImpl;
+import com.miguel.gastos.data.GastoRepository;
+import com.miguel.gastos.data.GastoRepositoryFactory;
 import com.miguel.gastos.model.*;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -34,7 +34,7 @@ public class MainController implements Initializable {
     @FXML private TableColumn<Gasto, String> colFecha;
     @FXML private TableColumn<Gasto, String> colDetalle;
 
-    private final GastoDAO dao = new GastoDAOImpl();
+    private final GastoRepository repository = GastoRepositoryFactory.get();
     private ObservableList<Gasto> listaGastos;
 
     @Override
@@ -65,11 +65,11 @@ public class MainController implements Initializable {
                     setStyle("");
                 } else {
                     setText(tipo);
-                    String color = switch (tipo) {
-                        case "Fijo"     -> "#89b4fa";
-                        case "Variable" -> "#a6e3a1";
-                        case "Ocio"     -> "#fab387";
-                        default               -> "#cdd6f4";
+                    String color = switch (tipo.toUpperCase()) {
+                        case "FIJO"     -> "#89b4fa";
+                        case "VARIABLE" -> "#a6e3a1";
+                        case "OCIO"     -> "#fab387";
+                        default         -> "#cdd6f4";
                     };
                     setStyle("-fx-text-fill: " + color + "; -fx-font-weight: bold;");
                 }
@@ -110,7 +110,7 @@ public class MainController implements Initializable {
     }
 
     private void cargarGastos() {
-        List<Gasto> gastos = dao.listarTodos();
+        List<Gasto> gastos = repository.listarTodos();
         listaGastos = FXCollections.observableArrayList(gastos);
         tablaGastos.setItems(listaGastos);
         actualizarTarjetas();
@@ -190,7 +190,7 @@ public class MainController implements Initializable {
         confirmacion.setHeaderText(null);
         confirmacion.showAndWait().ifPresent(respuesta -> {
             if (respuesta == ButtonType.YES) {
-                dao.eliminar(seleccionado.getId());
+                repository.eliminar(seleccionado.getId());
                 cargarGastos();
             }
         });

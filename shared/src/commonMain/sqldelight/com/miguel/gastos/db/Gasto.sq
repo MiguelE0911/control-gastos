@@ -1,0 +1,31 @@
+CREATE TABLE gastos (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  tipo TEXT NOT NULL,
+  descripcion TEXT NOT NULL,
+  monto REAL NOT NULL,
+  fecha TEXT NOT NULL,
+  dia_pago INTEGER,
+  subcategoria TEXT,
+  es_recurrente INTEGER
+);
+
+insertar:
+INSERT INTO gastos (tipo, descripcion, monto, fecha, dia_pago, subcategoria, es_recurrente)
+VALUES (?, ?, ?, ?, ?, ?, ?);
+
+buscarPorId:
+SELECT * FROM gastos WHERE id = ?;
+
+listarTodos:
+SELECT * FROM gastos ORDER BY fecha DESC;
+
+ultimoId:
+SELECT last_insert_rowid();
+
+actualizar:
+UPDATE gastos
+SET descripcion = ?, monto = ?, fecha = ?, dia_pago = ?, subcategoria = ?, es_recurrente = ?
+WHERE id = ?;
+
+eliminar:
+DELETE FROM gastos WHERE id = ?;

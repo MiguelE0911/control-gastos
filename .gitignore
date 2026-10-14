@@ -1,9 +1,13 @@
-# Maven
+# Maven (legado, en retirada)
 target/
 *.class
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
+
+# Gradle
+.gradle/
+!gradle/wrapper/gradle-wrapper.jar
 
 ### IntelliJ IDEA ###
 .idea/modules.xml
