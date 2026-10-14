@@ -17,3 +17,4 @@ dependencyResolutionManagement {
 
 include(":shared")
 include(":desktop-javafx")
+include(":android")

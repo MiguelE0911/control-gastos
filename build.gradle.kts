@@ -4,6 +4,8 @@ plugins {
     alias(libs.plugins.sqldelight) apply false
     alias(libs.plugins.javafx) apply false
     alias(libs.plugins.android.kmp.library) apply false
+    alias(libs.plugins.android.application) apply false
+    alias(libs.plugins.compose.compiler) apply false
 }
 
 allprojects {
